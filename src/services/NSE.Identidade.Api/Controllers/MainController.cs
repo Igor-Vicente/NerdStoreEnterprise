@@ -10,7 +10,7 @@ namespace NSE.Identidade.Api.Controllers
 
         protected IActionResult CustomResponse(object result = null)
         {
-            if (OperacaoValida())
+            if (!Errors.Any())
             {
                 return Ok(new
                 {
@@ -38,20 +38,9 @@ namespace NSE.Identidade.Api.Controllers
             }
             return CustomResponse();
         }
-
-        protected bool OperacaoValida()
-        {
-            return !Errors.Any();
-        }
-
         protected void AdicionarErroProcessamento(string erro)
         {
             Errors.Add(erro);
-        }
-
-        protected void LimparErrosProcessamento()
-        {
-            Errors.Clear();
         }
     }
 }

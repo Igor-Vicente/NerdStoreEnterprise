@@ -17,7 +17,7 @@ namespace NSE.WebApp.MVC.Services
 
             TratarErrosResponse(response);
 
-            return await DeserializarResponseAsync<UsuarioResponstaLoginVM>(response);
+            return await DeserializarDefaultResponseAsync<UsuarioResponstaLoginVM>(response);
         }
 
         public async Task<DefaultResponseVM<UsuarioResponstaLoginVM>> Register(UsuarioRegistroVM usuarioRegistroVM)
@@ -26,7 +26,7 @@ namespace NSE.WebApp.MVC.Services
 
             TratarErrosResponse(response);
 
-            return await DeserializarResponseAsync<UsuarioResponstaLoginVM>(response);
+            return await DeserializarDefaultResponseAsync<UsuarioResponstaLoginVM>(response);
         }
     }
 }

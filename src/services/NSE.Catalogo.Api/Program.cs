@@ -1,4 +1,11 @@
 
+using Microsoft.EntityFrameworkCore;
+using NSE.Catalogo.Api.Configuration;
+using NSE.Catalogo.Api.Data;
+using NSE.Catalogo.Api.Data.Repository;
+using NSE.Catalogo.Api.Models;
+using NSE.WebApi.Core.Identidade;
+
 namespace NSE.Catalogo.Api
 {
     public class Program
@@ -7,27 +14,34 @@ namespace NSE.Catalogo.Api
         {
             var builder = WebApplication.CreateBuilder(args);
 
-            // Add services to the container.
+            builder.Services.AddDbContext<CatalogoContext>(options =>
+                options.UseSqlServer(builder.Configuration.GetConnectionString("Default")));
 
             builder.Services.AddControllers();
-            // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+            builder.Services.AddJwtConfiguration(builder.Configuration);
             builder.Services.AddEndpointsApiExplorer();
-            builder.Services.AddSwaggerGen();
+            builder.Services.AddSwaggerConfiguration();
+
+            builder.Services.AddCors(options =>
+            {
+                options.AddPolicy("Development", policy =>
+                {
+                    policy.AllowAnyOrigin();
+                    policy.AllowAnyMethod();
+                    policy.AllowAnyHeader();
+                });
+            });
+
+            builder.Services.AddScoped<IProdutoRepository, ProdutoRepository>();
 
             var app = builder.Build();
 
-            // Configure the HTTP request pipeline.
-            if (app.Environment.IsDevelopment())
-            {
-                app.UseSwagger();
-                app.UseSwaggerUI();
-            }
-
+            app.UseCors("Development");
+            app.UseSwagger();
+            app.UseSwaggerUI();
+            app.UseHsts();
             app.UseHttpsRedirection();
-
-            app.UseAuthorization();
-
-
+            app.UseAuthConfiguration();
             app.MapControllers();
 
             app.Run();

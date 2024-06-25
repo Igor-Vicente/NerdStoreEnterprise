@@ -15,19 +15,12 @@ namespace NSE.WebApp.MVC
 
             var app = builder.Build();
 
-            app.UseExceptionHandler("/erro/500");
-            app.UseStatusCodePagesWithRedirects("/erro/{0}");
+            app.UseAppConfiguration();
 
-            app.UseHsts();
-            app.UseHttpsRedirection();
-            app.UseStaticFiles();
-            app.UseRouting();
-            app.UseAuthentication();
-            app.UseAuthorization();
-            app.UseMiddleware<ExceptionMiddleware>();
             app.MapControllerRoute(
                 name: "default",
-                pattern: "{controller=Home}/{action=Index}/{id?}");
+                pattern: "{controller=Catalogo}/{action=Index}/{id?}");
+
             app.Run();
         }
     }

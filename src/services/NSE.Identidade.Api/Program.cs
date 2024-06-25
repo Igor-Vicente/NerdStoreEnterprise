@@ -1,4 +1,5 @@
 using NSE.Identidade.Api.Configuration;
+using NSE.WebApi.Core.Identidade;
 using System.Reflection;
 
 namespace NSE.Identidade.Api
@@ -40,8 +41,7 @@ namespace NSE.Identidade.Api
             app.UseCors("Development");
             app.UseHsts();
             app.UseHttpsRedirection();
-            app.UseAuthentication();
-            app.UseAuthorization();
+            app.UseAuthConfiguration();
             app.MapControllers();
             app.Run();
         }
