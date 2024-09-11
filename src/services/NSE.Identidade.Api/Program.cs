@@ -9,7 +9,6 @@ namespace NSE.Identidade.Api
         public static void Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
-
             #region Definindo appSettings.json
             //userSecrets tem preferência sobre qualquer appsettings.json
             builder.Configuration

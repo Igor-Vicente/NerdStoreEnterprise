@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using NSE.Identidade.Api.Dtos;
+using NSE.WebApi.Core.Controllers;
 using NSE.WebApi.Core.Identidade;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
@@ -30,7 +31,6 @@ namespace NSE.Identidade.Api.Controllers
         public async Task<IActionResult> Registrar(AddUsuarioDto usuarioDto)
         {
             // return new StatusCodeResult(403);
-
             if (!ModelState.IsValid) return CustomResponse(ModelState);
 
             var usuario = new IdentityUser { Email = usuarioDto.Email, UserName = usuarioDto.Email };

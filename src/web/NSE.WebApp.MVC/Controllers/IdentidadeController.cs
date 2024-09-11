@@ -27,13 +27,11 @@ namespace NSE.WebApp.MVC.Controllers
         [HttpPost("nova-conta")]
         public async Task<IActionResult> Registro(UsuarioRegistroVM usuarioRegistroVM)
         {
-            if (!ModelState.IsValid) return BadRequest(usuarioRegistroVM);
+            if (!ModelState.IsValid) return View(usuarioRegistroVM);
 
-            // API - REGISTRO
             var resp = await _autenticacaoService.Register(usuarioRegistroVM);
             if (PossuiErrosResponse(resp)) return View(usuarioRegistroVM);
 
-            //Realizar Login
             await RealizarLogin(resp.Data);
 
             return RedirectToAction("Index", "Home");

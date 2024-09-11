@@ -11,7 +11,7 @@ namespace NSE.WebApp.MVC.Services.Handlers
         {
             _user = user;
         }
-
+        //intercepta o sendAsync do httpclient e adiciona o header 'Authorization' #obs: adicionar Injeção de dependencia e registrar .AddHttpMessageHandler<HttpClientAuthorizationDelegatingHandler>() no client  
         protected override Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
         {
             var authorizationHeader = _user.ObterHttpContext().Request.Headers["Authorization"];

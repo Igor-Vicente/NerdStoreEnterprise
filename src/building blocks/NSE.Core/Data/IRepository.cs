@@ -4,5 +4,6 @@ namespace NSE.Core.Data
 {
     public interface IRepository<T> : IDisposable where T : IAggragateRoot
     {
+        IUnitOfWork UnitOfWork { get; }
     }
 }

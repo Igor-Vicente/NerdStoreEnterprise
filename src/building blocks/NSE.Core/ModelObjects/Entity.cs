@@ -1,9 +1,29 @@
-﻿namespace NSE.Core.ModelObjects
+﻿using NSE.Core.Messages;
+
+namespace NSE.Core.ModelObjects
 {
     public abstract class Entity
     {
         public Guid Id { get; set; }
 
+        private List<Event> _notificacoes;
+        public IReadOnlyCollection<Event> Notificacoes => _notificacoes?.AsReadOnly();
+
+        public void AdicionarEvento(Event evento)
+        {
+            _notificacoes = _notificacoes ?? new List<Event>();
+            _notificacoes.Add(evento);
+        }
+        public void RemoverEvento(Event evento)
+        {
+            _notificacoes?.Remove(evento);
+        }
+        public void LimparEventos()
+        {
+            _notificacoes?.Clear();
+        }
+
+        #region Comporações
         public static bool operator ==(Entity left, Entity right)
         {
             if (ReferenceEquals(left, null) && ReferenceEquals(right, null)) return true;
@@ -32,5 +52,6 @@
         {
             return $"{GetType().Name} [Id={Id}]";
         }
+        #endregion
     }
 }

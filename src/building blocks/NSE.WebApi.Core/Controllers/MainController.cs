@@ -1,7 +1,8 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using FluentValidation.Results;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 
-namespace NSE.Catalogo.Api.Controllers
+namespace NSE.WebApi.Core.Controllers
 {
     [ApiController]
     public abstract class MainController : ControllerBase
@@ -25,12 +26,23 @@ namespace NSE.Catalogo.Api.Controllers
                     success = false,
                     errors = Errors.ToArray()
                 });
+
+                //return BadRequest(new ValidationProblemDetails(new Dictionary<string, string[]> { {"Mensagens", Errors.ToArray() } }));
             }
         }
         protected IActionResult CustomResponse(ModelStateDictionary modelState)
         {
             var erros = modelState.Values.SelectMany(e => e.Errors);
             foreach (var erro in erros)
+            {
+                AdicionarErroProcessamento(erro.ErrorMessage);
+            }
+            return CustomResponse();
+        }
+
+        protected IActionResult CustomResponse(ValidationResult result)
+        {
+            foreach (var erro in result.Errors)
             {
                 AdicionarErroProcessamento(erro.ErrorMessage);
             }

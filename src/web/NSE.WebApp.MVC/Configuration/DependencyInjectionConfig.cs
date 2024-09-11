@@ -1,4 +1,5 @@
-﻿using NSE.WebApp.MVC.Extensions;
+﻿using Microsoft.AspNetCore.Mvc.DataAnnotations;
+using NSE.WebApp.MVC.Extensions;
 using NSE.WebApp.MVC.Services;
 using NSE.WebApp.MVC.Services.Handlers;
 using Polly;
@@ -9,6 +10,7 @@ namespace NSE.WebApp.MVC.Configuration
     {
         public static IServiceCollection RegisterServices(this IServiceCollection services, IConfiguration configuration)
         {
+            services.AddSingleton<IValidationAttributeAdapterProvider, CpfValidationAttributeAdapterProvider>();
             services.AddTransient<HttpClientAuthorizationDelegatingHandler>();
 
             services.AddHttpClient<IAutenticacaoService, AutenticacaoService>(o =>
@@ -17,7 +19,7 @@ namespace NSE.WebApp.MVC.Configuration
             services.AddHttpClient<ICatalogoService, CatalogoService>(o => o.BaseAddress = new Uri(configuration.GetValue<string>("CatalogoUrl") ?? ""))
                 .AddHttpMessageHandler<HttpClientAuthorizationDelegatingHandler>()
                 .AddPolicyHandler(PollyExtensions.GetRetryPolicy())
-                .AddTransientHttpErrorPolicy(p => p.CircuitBreakerAsync(5, TimeSpan.FromSeconds(30)));
+                .AddTransientHttpErrorPolicy(p => p.CircuitBreakerAsync(5, TimeSpan.FromSeconds(30))); //após 5 falhas consecutivas de requisição, impede a comunição na api por 30 seg
 
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddScoped<IUser, AspNetUser>();
