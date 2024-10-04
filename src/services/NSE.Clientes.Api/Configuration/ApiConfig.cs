@@ -6,7 +6,10 @@ using NSE.Clientes.Api.Application.Commands;
 using NSE.Clientes.Api.Application.Events;
 using NSE.Clientes.Api.Data;
 using NSE.Clientes.Api.Data.Repository;
+using NSE.Clientes.Api.Services;
 using NSE.Core.Mediator;
+using NSE.Core.Utils;
+using NSE.MessageBus;
 using System.Reflection;
 
 namespace NSE.Clientes.Api.Configuration
@@ -25,6 +28,9 @@ namespace NSE.Clientes.Api.Configuration
             services.AddScoped<IRequestHandler<RegistrarClienteCommand, ValidationResult>, ClienteCommandHandler>();
             services.AddScoped<IClienteRepository, ClienteRepository>();
             services.AddScoped<INotificationHandler<ClienteRegistradoEvent>, ClinteEventHandler>();
+
+            services.AddMessageBus(configuration.GetMessageQueueConnection("MessageBus"));
+            services.AddHostedService<RegistroClienteIntegrationHandler>(); //life cicle of a background service is Singleton
 
             services.AddControllers();
 

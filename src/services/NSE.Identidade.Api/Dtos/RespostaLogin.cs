@@ -1,6 +1,6 @@
 ﻿namespace NSE.Identidade.Api.Dtos
 {
-    public class RespostaLoginDto
+    public class RespostaLogin
     {
         public string AccessToken { get; set; }
         public double ExpiresIn { get; set; }

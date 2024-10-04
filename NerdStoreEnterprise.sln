@@ -43,7 +43,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NSE.WebApi.Core", "src\buil
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NSE.Clientes.Api", "src\services\NSE.Clientes.Api\NSE.Clientes.Api.csproj", "{7B169F96-64CB-47A5-83A7-93B2330ADF9C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NSE.Pagamento.Api", "src\services\NSE.Pagamento.Api\NSE.Pagamento.Api.csproj", "{1354D2BA-C1A7-4DD2-9FE2-98B16E1F7CAE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NSE.Pagamento.Api", "src\services\NSE.Pagamento.Api\NSE.Pagamento.Api.csproj", "{1354D2BA-C1A7-4DD2-9FE2-98B16E1F7CAE}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "MessageBus", "MessageBus", "{4431DA00-8A9B-44C8-8439-E3F5784EBE7D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NSE.MessageBus", "src\building blocks\NSE.MessageBus\NSE.MessageBus.csproj", "{91922992-3247-4C01-8DE8-A0E873D50793}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -83,6 +87,10 @@ Global
 		{1354D2BA-C1A7-4DD2-9FE2-98B16E1F7CAE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1354D2BA-C1A7-4DD2-9FE2-98B16E1F7CAE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1354D2BA-C1A7-4DD2-9FE2-98B16E1F7CAE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{91922992-3247-4C01-8DE8-A0E873D50793}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{91922992-3247-4C01-8DE8-A0E873D50793}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{91922992-3247-4C01-8DE8-A0E873D50793}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{91922992-3247-4C01-8DE8-A0E873D50793}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -108,6 +116,8 @@ Global
 		{7875D547-8AF9-4660-B97C-B5783AAD451A} = {88A29CDB-409B-4E55-9453-387019F56F55}
 		{7B169F96-64CB-47A5-83A7-93B2330ADF9C} = {8B277F43-A4ED-4CC2-8C04-F85C71290A46}
 		{1354D2BA-C1A7-4DD2-9FE2-98B16E1F7CAE} = {1B31DD08-F5A2-49B5-956F-7E22BB735DD5}
+		{4431DA00-8A9B-44C8-8439-E3F5784EBE7D} = {816F0219-6461-4395-B583-6D12C4EB1201}
+		{91922992-3247-4C01-8DE8-A0E873D50793} = {4431DA00-8A9B-44C8-8439-E3F5784EBE7D}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {9140390D-0601-481E-BFAA-D0E9E90F51F5}

@@ -30,7 +30,7 @@ namespace NSE.Identidade.Api
                 });
             });
 
-            builder.Services.ConfigureApi();
+            builder.Services.ConfigureApi(builder.Configuration);
             builder.Services.ConfigureSwagger();
 
             var app = builder.Build();
