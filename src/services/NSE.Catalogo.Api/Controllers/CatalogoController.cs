@@ -2,7 +2,6 @@
 using Microsoft.AspNetCore.Mvc;
 using NSE.Catalogo.Api.Models;
 using NSE.WebApi.Core.Controllers;
-using NSE.WebApi.Core.Identidade;
 
 namespace NSE.Catalogo.Api.Controllers
 {
@@ -24,7 +23,7 @@ namespace NSE.Catalogo.Api.Controllers
             return CustomResponse(produtos);
         }
 
-        [ClaimsAuthorize("Catalogo", "Ler")]
+        //[ClaimsAuthorize("Catalogo", "Ler")]
         [HttpGet("produtos/{id:guid}")]
         public async Task<IActionResult> ProdutoDetalhes(Guid id)
         {

@@ -10,14 +10,14 @@ namespace NSE.WebApp.MVC.Services
         {
             _httpClient = httpClient;
         }
-        public async Task<DefaultResponseVM<ProdutoViewModel>> ObterPorId(Guid id)
+        public async Task<DefaultResponseViewModel<ProdutoViewModel>> ObterPorId(Guid id)
         {
             var response = await _httpClient.GetAsync($"/api/v1/catalogo/produtos/{id}");
             TratarErrosResponse(response);
             return await DeserializarDefaultResponseAsync<ProdutoViewModel>(response);
         }
 
-        public async Task<DefaultResponseVM<ProdutoViewModel[]>> ObterTodos()
+        public async Task<DefaultResponseViewModel<ProdutoViewModel[]>> ObterTodos()
         {
             var response = await _httpClient.GetAsync("/api/v1/catalogo/produtos");
             TratarErrosResponse(response);

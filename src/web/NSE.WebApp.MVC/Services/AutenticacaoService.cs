@@ -11,22 +11,22 @@ namespace NSE.WebApp.MVC.Services
             _httpClient = httpClient;
         }
 
-        public async Task<DefaultResponseVM<UsuarioResponstaLoginVM>> Login(UsuarioLoginVM loginVM)
+        public async Task<DefaultResponseViewModel<UsuarioResponstaLoginViewModel>> Login(UsuarioLoginViewModel loginVM)
         {
             var response = await _httpClient.PostAsJsonAsync("/api/v1/identidade/autenticar", loginVM);
 
             TratarErrosResponse(response);
 
-            return await DeserializarDefaultResponseAsync<UsuarioResponstaLoginVM>(response);
+            return await DeserializarDefaultResponseAsync<UsuarioResponstaLoginViewModel>(response);
         }
 
-        public async Task<DefaultResponseVM<UsuarioResponstaLoginVM>> Register(UsuarioRegistroVM usuarioRegistroVM)
+        public async Task<DefaultResponseViewModel<UsuarioResponstaLoginViewModel>> Register(UsuarioRegistroViewModel usuarioRegistroVM)
         {
             var response = await _httpClient.PostAsJsonAsync("/api/v1/identidade/nova-conta", usuarioRegistroVM);
 
             TratarErrosResponse(response);
 
-            return await DeserializarDefaultResponseAsync<UsuarioResponstaLoginVM>(response);
+            return await DeserializarDefaultResponseAsync<UsuarioResponstaLoginViewModel>(response);
         }
     }
 }

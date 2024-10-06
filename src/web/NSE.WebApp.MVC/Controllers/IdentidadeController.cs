@@ -25,14 +25,14 @@ namespace NSE.WebApp.MVC.Controllers
         }
 
         [HttpPost("nova-conta")]
-        public async Task<IActionResult> Registro(UsuarioRegistroVM usuarioRegistroVM)
+        public async Task<IActionResult> Registro(UsuarioRegistroViewModel model)
         {
-            if (!ModelState.IsValid) return View(usuarioRegistroVM);
+            if (!ModelState.IsValid) return View(model);
 
-            var resp = await _autenticacaoService.Register(usuarioRegistroVM);
-            if (PossuiErrosResponse(resp)) return View(usuarioRegistroVM);
+            var resposta = await _autenticacaoService.Register(model);
+            if (PossuiErrosResponse(resposta)) return View(model);
 
-            await RealizarLogin(resp.Data);
+            await RealizarLogin(resposta.Data);
 
             return RedirectToAction("Index", "Home");
         }
@@ -45,15 +45,15 @@ namespace NSE.WebApp.MVC.Controllers
         }
 
         [HttpPost("login")]
-        public async Task<IActionResult> Login(UsuarioLoginVM usuarioLoginVM, string returnUrl = null)
+        public async Task<IActionResult> Login(UsuarioLoginViewModel model, string returnUrl = null)
         {
             ViewData["ReturnUrl"] = returnUrl;
-            if (!ModelState.IsValid) return BadRequest(usuarioLoginVM);
+            if (!ModelState.IsValid) return BadRequest(model);
 
-            var resp = await _autenticacaoService.Login(usuarioLoginVM);
-            if (PossuiErrosResponse(resp)) return View(usuarioLoginVM);
+            var resposta = await _autenticacaoService.Login(model);
+            if (PossuiErrosResponse(resposta)) return View(model);
 
-            await RealizarLogin(resp.Data);
+            await RealizarLogin(resposta.Data);
 
             if (string.IsNullOrEmpty(returnUrl)) return RedirectToAction("Index", "Home");
             return LocalRedirect(returnUrl);
@@ -66,11 +66,11 @@ namespace NSE.WebApp.MVC.Controllers
             return RedirectToAction("Index", "Home");
         }
 
-        private async Task RealizarLogin(UsuarioResponstaLoginVM usuarioResponstaLoginVM)
+        private async Task RealizarLogin(UsuarioResponstaLoginViewModel model)
         {
-            var jwt = ObterTokenFormatado(usuarioResponstaLoginVM.AccessToken);
+            var jwt = ObterTokenFormatado(model.AccessToken);
             var claims = new List<Claim>();
-            claims.Add(new Claim("JWT", usuarioResponstaLoginVM.AccessToken));
+            claims.Add(new Claim("JWT", model.AccessToken));
             claims.AddRange(jwt.Claims);
 
             var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);

@@ -31,6 +31,7 @@ namespace NSE.WebApi.Core.Identidade
                     ValidIssuer = identidadeSecrets!.Emissor,
                     ValidAudience = identidadeSecrets!.Audiencia,
                 };
+                jwtBearerOpts.MapInboundClaims = false;
             });
 
             return services;

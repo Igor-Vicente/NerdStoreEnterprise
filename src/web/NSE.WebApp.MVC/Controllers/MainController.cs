@@ -5,15 +5,25 @@ namespace NSE.WebApp.MVC.Controllers
 {
     public abstract class MainController : Controller
     {
-        protected bool PossuiErrosResponse(DefaultResponseVM<UsuarioResponstaLoginVM> defaultResponseVM)
+        protected bool PossuiErrosResponse<T>(DefaultResponseViewModel<T> defaultResponse)
         {
-            if (defaultResponseVM.Errors != null)
-                foreach (var erro in defaultResponseVM.Errors)
+            if (defaultResponse.Errors != null)
+                foreach (var erro in defaultResponse.Errors)
                 {
                     ModelState.AddModelError(string.Empty, erro);
                 }
 
-            return !defaultResponseVM.Success;
+            return !defaultResponse.Success;
+        }
+
+        protected void AdicionarErroValidacao(string mensagem)
+        {
+            ModelState.AddModelError("", mensagem);
+        }
+
+        protected bool OperacaoValida()
+        {
+            return ModelState.ErrorCount == 0;
         }
     }
 }

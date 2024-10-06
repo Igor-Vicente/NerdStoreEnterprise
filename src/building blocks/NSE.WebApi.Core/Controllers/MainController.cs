@@ -7,11 +7,11 @@ namespace NSE.WebApi.Core.Controllers
     [ApiController]
     public abstract class MainController : ControllerBase
     {
-        protected ICollection<string> Errors = new List<string>();
+        protected ICollection<string> Erros = new List<string>();
 
         protected IActionResult CustomResponse(object result = null)
         {
-            if (!Errors.Any())
+            if (OperacaoValida())
             {
                 return Ok(new
                 {
@@ -24,7 +24,7 @@ namespace NSE.WebApi.Core.Controllers
                 return BadRequest(new
                 {
                     success = false,
-                    errors = Errors.ToArray()
+                    errors = Erros.ToArray()
                 });
 
                 //return BadRequest(new ValidationProblemDetails(new Dictionary<string, string[]> { {"Mensagens", Errors.ToArray() } }));
@@ -49,9 +49,14 @@ namespace NSE.WebApi.Core.Controllers
             return CustomResponse();
         }
 
+        protected bool OperacaoValida()
+        {
+            return !Erros.Any();
+        }
+
         protected void AdicionarErroProcessamento(string erro)
         {
-            Errors.Add(erro);
+            Erros.Add(erro);
         }
     }
 }

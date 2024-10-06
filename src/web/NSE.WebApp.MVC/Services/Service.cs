@@ -24,13 +24,13 @@ namespace NSE.WebApp.MVC.Services
             return true;
         }
 
-        protected async Task<DefaultResponseVM<T>> DeserializarDefaultResponseAsync<T>(HttpResponseMessage response)
+        protected async Task<DefaultResponseViewModel<T>> DeserializarDefaultResponseAsync<T>(HttpResponseMessage response)
         {
             var options = new JsonSerializerOptions
             {
                 PropertyNameCaseInsensitive = true,
             };
-            var result = JsonSerializer.Deserialize<DefaultResponseVM<T>>(await response.Content.ReadAsStringAsync(), options);
+            var result = JsonSerializer.Deserialize<DefaultResponseViewModel<T>>(await response.Content.ReadAsStringAsync(), options);
             return result;
         }
 

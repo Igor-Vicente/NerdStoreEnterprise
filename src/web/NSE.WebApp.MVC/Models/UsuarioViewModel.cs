@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace NSE.WebApp.MVC.Models
 {
-    public class UsuarioRegistroVM
+    public class UsuarioRegistroViewModel
     {
         [Required(ErrorMessage = "O campo {0} é obrigatório")]
         [DisplayName("Nome Completo")]
@@ -28,7 +28,7 @@ namespace NSE.WebApp.MVC.Models
         [Compare("Senha", ErrorMessage = "Senhas não correspondem")]
         public string SenhaConfirmacao { get; set; }
     }
-    public class UsuarioLoginVM
+    public class UsuarioLoginViewModel
     {
         [Required(ErrorMessage = "O campo {0} é obrigatório")]
         [EmailAddress(ErrorMessage = "O campo {0} está em formato inválido")]
@@ -39,22 +39,22 @@ namespace NSE.WebApp.MVC.Models
         public string Senha { get; set; }
     }
 
-    public class UsuarioResponstaLoginVM
+    public class UsuarioResponstaLoginViewModel
     {
         public string AccessToken { get; set; }
         public double ExpiresIn { get; set; }
         public string ExpiresPeriod { get; set; }
-        public UsuarioTokenVM UsuarioToken { get; set; }
+        public UsuarioTokenViewModel UsuarioToken { get; set; }
     }
 
-    public class UsuarioTokenVM
+    public class UsuarioTokenViewModel
     {
         public string Id { get; set; }
         public string Email { get; set; }
-        public IEnumerable<UsuarioClaimVM> Claims { get; set; }
+        public IEnumerable<UsuarioClaimViewModel> Claims { get; set; }
     }
 
-    public class UsuarioClaimVM
+    public class UsuarioClaimViewModel
     {
         public string Value { get; set; }
         public string Type { get; set; }
