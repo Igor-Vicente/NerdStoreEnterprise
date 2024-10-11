@@ -2,7 +2,7 @@
 
 namespace NSE.Catalogo.Api.Models
 {
-    public class Produto : Entity, IAggragateRoot
+    public class Produto : Entity, IAggregateRoot
     {
         public string Nome { get; set; }
         public string Descricao { get; set; }

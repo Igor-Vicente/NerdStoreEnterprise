@@ -27,7 +27,12 @@ namespace NSE.WebApp.MVC.Configuration
                 .AddPolicyHandler(PollyExtensions.GetRetryPolicy())
                 .AddTransientHttpErrorPolicy(p => p.CircuitBreakerAsync(5, TimeSpan.FromSeconds(30))); //após 5 falhas consecutivas de requisição, impede a comunição na api por 30 seg
 
-            services.AddHttpClient<ICarrinhoService, CarrinhoService>(o => o.BaseAddress = new Uri(configuration.GetValue<string>("CarrinhoUrl") ?? ""))
+            services.AddHttpClient<IComprasBffService, ComprasBffService>(o => o.BaseAddress = new Uri(configuration.GetValue<string>("ComprasBffUrl") ?? ""))
+                .AddHttpMessageHandler<HttpClientAuthorizationDelegatingHandler>()
+                .AddPolicyHandler(PollyExtensions.GetRetryPolicy())
+                .AddTransientHttpErrorPolicy(p => p.CircuitBreakerAsync(5, TimeSpan.FromSeconds(30)));
+
+            services.AddHttpClient<IClienteService, ClienteService>(o => o.BaseAddress = new Uri(configuration.GetValue<string>("ClienteUrl") ?? ""))
                 .AddHttpMessageHandler<HttpClientAuthorizationDelegatingHandler>()
                 .AddPolicyHandler(PollyExtensions.GetRetryPolicy())
                 .AddTransientHttpErrorPolicy(p => p.CircuitBreakerAsync(5, TimeSpan.FromSeconds(30)));

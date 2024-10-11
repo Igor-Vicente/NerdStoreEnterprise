@@ -9,6 +9,8 @@ namespace NSE.Clientes.Api.Data.Repository
         void Adicionar(Cliente cliente);
         Task<IEnumerable<Cliente>> ObterTodos();
         Task<Cliente> ObterPorCpf(string cpf);
+        void AdicionarEndereco(Endereco endereco);
+        Task<Endereco> ObterEnderecoPorId(Guid id);
     }
     public class ClienteRepository : IClienteRepository
     {
@@ -39,6 +41,16 @@ namespace NSE.Clientes.Api.Data.Repository
         public async Task<IEnumerable<Cliente>> ObterTodos()
         {
             return await _context.Clientes.AsNoTracking().ToListAsync();
+        }
+
+        public void AdicionarEndereco(Endereco endereco)
+        {
+            _context.Enderecos.Add(endereco);
+        }
+
+        public async Task<Endereco> ObterEnderecoPorId(Guid id)
+        {
+            return await _context.Enderecos.FirstOrDefaultAsync(e => e.ClienteId == id);
         }
     }
 }

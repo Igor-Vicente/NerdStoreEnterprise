@@ -1,6 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using NSE.Carrinho.Api.Data;
+using NSE.Carrinho.Api.Services;
+using NSE.Core.Utils;
+using NSE.MessageBus;
 using NSE.WebApi.Core.Usuario;
 using System.Text.Json.Serialization;
 
@@ -16,6 +19,9 @@ namespace NSE.Carrinho.Api.Configuration
 
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddScoped<IAspNetUser, AspNetUser>();
+
+            services.AddMessageBus(configuration.GetMessageQueueConnection("MessageBus"))
+                .AddHostedService<CarrinhoIntegrationHandler>();
 
             services.AddControllers()
                 .AddJsonOptions(options =>

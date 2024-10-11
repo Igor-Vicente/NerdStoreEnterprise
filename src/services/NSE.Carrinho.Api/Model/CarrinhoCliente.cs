@@ -11,6 +11,10 @@ namespace NSE.Carrinho.Api.Model
         public decimal ValorTotal { get; set; }
         public List<CarrinhoItem> Itens { get; set; } = new();
         public ValidationResult ValidationResult { get; set; }
+        public bool VoucherUtilizado { get; set; }
+        public decimal Desconto { get; set; }
+        public Voucher Voucher { get; set; }
+
         public CarrinhoCliente(Guid clienteId)
         {
             Id = Guid.NewGuid();
@@ -19,6 +23,13 @@ namespace NSE.Carrinho.Api.Model
 
         public CarrinhoCliente()
         { }
+
+        public void AplicarVoucher(Voucher voucher)
+        {
+            Voucher = voucher;
+            VoucherUtilizado = true;
+            CalcularValorTotalCarrinho();
+        }
 
         internal CarrinhoItem ObterPorProdutoId(Guid produtoId)
         {
@@ -66,6 +77,35 @@ namespace NSE.Carrinho.Api.Model
         internal void CalcularValorTotalCarrinho()
         {
             ValorTotal = Itens.Sum(i => i.CalcularValor());
+            CalcularValorTotalDesconto();
+        }
+
+        private void CalcularValorTotalDesconto()
+        {
+            if (!VoucherUtilizado) return;
+
+            decimal desconto = 0;
+            var valor = ValorTotal;
+
+            if (Voucher.TipoDesconto == TipoDescontoVoucher.Porcentagem)
+            {
+                if (Voucher.Percentual.HasValue)
+                {
+                    desconto = (valor * Voucher.Percentual.Value) / 100;
+                    valor -= desconto;
+                }
+            }
+            else
+            {
+                if (Voucher.ValorDesconto.HasValue)
+                {
+                    desconto = Voucher.ValorDesconto.Value;
+                    valor -= desconto;
+                }
+            }
+
+            ValorTotal = valor < 0 ? 0 : valor;
+            Desconto = desconto;
         }
 
         internal bool EhValido()

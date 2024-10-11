@@ -21,7 +21,6 @@ namespace NSE.Carrinho.Api.Controllers
             _context = context;
         }
 
-
         [HttpGet]
         public async Task<CarrinhoCliente> ObterCarrinho()
         {
@@ -47,7 +46,7 @@ namespace NSE.Carrinho.Api.Controllers
             return CustomResponse();
         }
 
-        [HttpPut("{produtoId}")]
+        [HttpPut("{produtoId:guid}")]
         public async Task<IActionResult> AtualizarItemCarrinho(Guid produtoId, CarrinhoItem item)
         {
             var carrinho = await ObterCarrinhoCliente();
@@ -65,8 +64,6 @@ namespace NSE.Carrinho.Api.Controllers
             return CustomResponse();
         }
 
-
-
         [HttpDelete("{produtoId:guid}")]
         public async Task<IActionResult> RemoverItemCarrinho(Guid produtoId)
         {
@@ -80,6 +77,19 @@ namespace NSE.Carrinho.Api.Controllers
             carrinho.RemoverItem(itemCarrinho);
 
             _context.CarrinhoItem.Remove(itemCarrinho);
+            _context.CarrinhoCliente.Update(carrinho);
+
+            await PersistirDados();
+            return CustomResponse();
+        }
+
+        [HttpPost("aplicar-voucher")]
+        public async Task<IActionResult> AplicarVoucher(Voucher voucher)
+        {
+            var carrinho = await ObterCarrinhoCliente();
+
+            carrinho.AplicarVoucher(voucher);
+
             _context.CarrinhoCliente.Update(carrinho);
 
             await PersistirDados();

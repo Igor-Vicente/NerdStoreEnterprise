@@ -10,6 +10,7 @@ using NSE.Clientes.Api.Services;
 using NSE.Core.Mediator;
 using NSE.Core.Utils;
 using NSE.MessageBus;
+using NSE.WebApi.Core.Usuario;
 using System.Reflection;
 
 namespace NSE.Clientes.Api.Configuration
@@ -23,9 +24,13 @@ namespace NSE.Clientes.Api.Configuration
             services.AddDbContext<ClientesContext>(options =>
                 options.UseSqlServer(configuration.GetConnectionString("Default")));
 
+            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+            services.AddScoped<IAspNetUser, AspNetUser>();
+
             services.AddMediatR(c => c.RegisterServicesFromAssemblies(Assembly.GetExecutingAssembly()));
             services.AddScoped<IMediatorHandler, MediatorHandler>();
             services.AddScoped<IRequestHandler<RegistrarClienteCommand, ValidationResult>, ClienteCommandHandler>();
+            services.AddScoped<IRequestHandler<AdicionarEnderecoCommand, ValidationResult>, ClienteCommandHandler>();
             services.AddScoped<IClienteRepository, ClienteRepository>();
             services.AddScoped<INotificationHandler<ClienteRegistradoEvent>, ClinteEventHandler>();
 

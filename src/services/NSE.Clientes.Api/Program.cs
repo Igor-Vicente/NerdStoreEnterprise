@@ -1,4 +1,5 @@
 using NSE.Clientes.Api.Configuration;
+using NSE.WebApi.Core.Identidade;
 using System.Reflection;
 
 namespace NSE.Clientes.Api
@@ -19,10 +20,10 @@ namespace NSE.Clientes.Api
                 .AddUserSecrets(Assembly.GetExecutingAssembly(), true);
             #endregion
 
-            builder.Services.AddControllers();
+            builder.Services.AddApiConfiguration(builder.Configuration);
+            builder.Services.AddJwtConfiguration(builder.Configuration);
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
-            builder.Services.AddApiConfiguration(builder.Configuration);
 
             var app = builder.Build();
 

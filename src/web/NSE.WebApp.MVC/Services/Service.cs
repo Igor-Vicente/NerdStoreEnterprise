@@ -1,5 +1,5 @@
-﻿using NSE.WebApp.MVC.Extensions;
-using NSE.WebApp.MVC.Models;
+﻿using NSE.Core.Models;
+using NSE.WebApp.MVC.Extensions;
 using System.Text.Json;
 
 namespace NSE.WebApp.MVC.Services
@@ -24,13 +24,23 @@ namespace NSE.WebApp.MVC.Services
             return true;
         }
 
-        protected async Task<DefaultResponseViewModel<T>> DeserializarDefaultResponseAsync<T>(HttpResponseMessage response)
+        protected async Task<ResponseResult<T>> DeserializarDefaultResponseAsync<T>(HttpResponseMessage response)
         {
             var options = new JsonSerializerOptions
             {
                 PropertyNameCaseInsensitive = true,
             };
-            var result = JsonSerializer.Deserialize<DefaultResponseViewModel<T>>(await response.Content.ReadAsStringAsync(), options);
+            var result = JsonSerializer.Deserialize<ResponseResult<T>>(await response.Content.ReadAsStringAsync(), options);
+            return result;
+        }
+
+        protected async Task<ResponseResult> DeserializarDefaultResponseAsync(HttpResponseMessage response)
+        {
+            var options = new JsonSerializerOptions
+            {
+                PropertyNameCaseInsensitive = true,
+            };
+            var result = JsonSerializer.Deserialize<ResponseResult>(await response.Content.ReadAsStringAsync(), options);
             return result;
         }
 

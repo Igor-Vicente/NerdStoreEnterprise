@@ -4,6 +4,16 @@ using NSE.Core.Data;
 
 namespace NSE.Catalogo.Api.Data.Repository
 {
+    public interface IProdutoRepository : IRepository<Produto>
+    {
+        Task<IEnumerable<Produto>> ObterTodosAsync();
+        Task<Produto> ObterPorId(Guid id);
+        Task<List<Produto>> ObterProdutosPorId(string ids);
+
+        void Adicionar(Produto produto);
+        void Atualizar(Produto produto);
+    }
+
     public class ProdutoRepository : IProdutoRepository
     {
         private readonly CatalogoContext _catalogoContext;
@@ -33,6 +43,18 @@ namespace NSE.Catalogo.Api.Data.Repository
         public async Task<IEnumerable<Produto>> ObterTodosAsync()
         {
             return await _catalogoContext.Produtos.AsNoTracking().ToListAsync();
+        }
+
+        public async Task<List<Produto>> ObterProdutosPorId(string ids)
+        {
+            var idsGuid = ids.Split(',').Select(id => (Ok: Guid.TryParse(id, out var x), Value: x));
+
+            if (!idsGuid.All(nid => nid.Ok)) return new List<Produto>();
+
+            var idsValue = idsGuid.Select(id => id.Value);
+
+            return await _catalogoContext.Produtos.AsNoTracking()
+                .Where(p => idsValue.Contains(p.Id) && p.Ativo).ToListAsync();
         }
 
         public void Dispose()
