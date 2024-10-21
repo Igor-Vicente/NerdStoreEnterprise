@@ -8,6 +8,7 @@ using NSE.MessageBus;
 using NSE.Pedidos.API.Application.Commands;
 using NSE.Pedidos.API.Application.Events;
 using NSE.Pedidos.API.Application.Queries;
+using NSE.Pedidos.API.Services;
 using NSE.Pedidos.Infra.Data;
 using NSE.Pedidos.Infra.Data.Repository;
 using NSE.WebApi.Core.Usuario;
@@ -24,6 +25,8 @@ namespace NSE.Pedidos.API.Configuration
             services.AddDbContext<PedidosContext>(options => options.UseSqlServer(configuration.GetConnectionString("Default")));
 
             services.AddMessageBus(configuration.GetMessageQueueConnection("MessageBus"));
+            services.AddHostedService<PedidoOrquestradorIntegrationHandler>();
+            services.AddHostedService<PedidoIntegrationHandler>();
 
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddScoped<IAspNetUser, AspNetUser>();

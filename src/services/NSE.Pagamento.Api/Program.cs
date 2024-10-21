@@ -1,5 +1,7 @@
 
-namespace NSE.Pagamento.Api
+using NSE.Pagamentos.Api.Configuration;
+
+namespace NSE.Pagamentos.Api
 {
     public class Program
     {
@@ -7,16 +9,13 @@ namespace NSE.Pagamento.Api
         {
             var builder = WebApplication.CreateBuilder(args);
 
-            // Add services to the container.
-
             builder.Services.AddControllers();
-            // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+            builder.Services.AddApiConfiguration(builder.Configuration);
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
 
             var app = builder.Build();
 
-            // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())
             {
                 app.UseSwagger();
@@ -24,10 +23,8 @@ namespace NSE.Pagamento.Api
             }
 
             app.UseHttpsRedirection();
-
+            app.UseAuthentication();
             app.UseAuthorization();
-
-
             app.MapControllers();
 
             app.Run();

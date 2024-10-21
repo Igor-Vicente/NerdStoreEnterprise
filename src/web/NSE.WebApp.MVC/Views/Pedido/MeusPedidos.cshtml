@@ -46,13 +46,13 @@
                                         <li class="col-md-4">
                                             <figure class="itemside  mb-3">
                                                 <div class="aside">
-                                                    <img src="~/images/produtos/@item.Imagem" alt="@item.Nome" class="border img-xs">
+                                                    <img src="~/images/produtos/@item.Imagem" alt="@item.NomeProduto" class="border img-xs">
                                                 </div>
                                                 <figcaption class="info">
                                                     <p>
-                                                        <b>@item.Nome</b>
+                                                        <b>@item.NomeProduto</b>
                                                     </p>
-                                                    <span>@this.UnidadesPorProdutoValorTotal(item.Quantidade, item.Valor) </span>
+                                                    <span>@this.UnidadesPorProdutoValorTotal(item.Quantidade, item.ValorUnitario) </span>
                                                 </figcaption>
                                             </figure>
                                         </li> 
