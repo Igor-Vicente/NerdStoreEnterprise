@@ -1,8 +1,8 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using NetDevPack.Security.Jwt.Core.Jwa;
 using NSE.Identidade.Api.Data;
 using NSE.Identidade.Api.Extensions;
-using NSE.WebApi.Core.Identidade;
 
 namespace NSE.Identidade.Api.Configuration
 {
@@ -10,6 +10,10 @@ namespace NSE.Identidade.Api.Configuration
     {
         public static IServiceCollection ConfigureIdentity(this IServiceCollection services, IConfiguration configuration)
         {
+            services.AddJwksManager(options => options.Jws = Algorithm.Create(DigitalSignaturesAlgorithm.EcdsaSha256))
+              .PersistKeysToDatabaseStore<AppDbContext>()
+              .UseJwtValidation();
+
             services.AddDbContext<AppDbContext>(ctxOptsBuilder =>
                ctxOptsBuilder.UseSqlServer(configuration.GetConnectionString("Default")));
 
@@ -18,7 +22,7 @@ namespace NSE.Identidade.Api.Configuration
                 .AddRoles<IdentityRole>()
                 .AddErrorDescriber<IdentityResponsePtBr>();
 
-            services.AddJwtConfiguration(configuration);
+            services.AddMemoryCache();
 
             return services;
         }

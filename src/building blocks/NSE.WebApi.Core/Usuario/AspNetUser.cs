@@ -9,6 +9,7 @@ namespace NSE.WebApi.Core.Usuario
         Guid ObterUserId();
         string ObterUserEmail();
         string ObterUserToken();
+        string ObterUserRefreshToken();
         bool EstaAutenticado();
         bool PossuiRole(string role);
         IEnumerable<Claim> ObterClaims();
@@ -39,6 +40,11 @@ namespace NSE.WebApi.Core.Usuario
         public string ObterUserToken()
         {
             return EstaAutenticado() ? _accessor.HttpContext.User.GetUserToken() : "";
+        }
+
+        public string ObterUserRefreshToken()
+        {
+            return EstaAutenticado() ? _accessor.HttpContext.User.GetUserRefreshToken() : "";
         }
 
         public bool EstaAutenticado()
@@ -94,6 +100,16 @@ namespace NSE.WebApi.Core.Usuario
             }
 
             var claim = principal.FindFirst("JWT");
+            return claim?.Value;
+        }
+        public static string GetUserRefreshToken(this ClaimsPrincipal principal)
+        {
+            if (principal == null)
+            {
+                throw new ArgumentException(nameof(principal));
+            }
+
+            var claim = principal.FindFirst("RefreshToken");
             return claim?.Value;
         }
     }

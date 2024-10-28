@@ -42,6 +42,7 @@ namespace NSE.Identidade.Api
             app.UseHttpsRedirection();
             app.UseAuthConfiguration();
             app.MapControllers();
+            app.UseJwksDiscovery();
             app.Run();
         }
     }

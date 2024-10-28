@@ -1,8 +1,7 @@
 ﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.IdentityModel.Tokens;
-using System.Text;
+using NetDevPack.Security.JwtExtensions;
 
 namespace NSE.WebApi.Core.Identidade
 {
@@ -22,15 +21,7 @@ namespace NSE.WebApi.Core.Identidade
             {
                 jwtBearerOpts.RequireHttpsMetadata = true;
                 jwtBearerOpts.SaveToken = true;
-                jwtBearerOpts.TokenValidationParameters = new TokenValidationParameters
-                {
-                    ValidateIssuerSigningKey = true,
-                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(identidadeSecrets!.Secret)),
-                    ValidateIssuer = true,
-                    ValidateAudience = true,
-                    ValidIssuer = identidadeSecrets!.Emissor,
-                    ValidAudience = identidadeSecrets!.Audiencia,
-                };
+                jwtBearerOpts.SetJwksOptions(new JwkOptions(identidadeSecrets.AutenticacaoJwksUrl));
                 jwtBearerOpts.MapInboundClaims = false;
             });
 

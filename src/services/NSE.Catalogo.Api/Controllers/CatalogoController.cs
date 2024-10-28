@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using NSE.Catalogo.Api.Data.Repository;
+using NSE.Catalogo.Api.Models;
 using NSE.WebApi.Core.Controllers;
 
 namespace NSE.Catalogo.Api.Controllers
@@ -17,10 +18,9 @@ namespace NSE.Catalogo.Api.Controllers
 
         [AllowAnonymous]
         [HttpGet("produtos")]
-        public async Task<IActionResult> TodosProdutos()
+        public async Task<PagedResult<Produto>> TodosProdutos([FromQuery] int ps = 8, [FromQuery] int page = 1, [FromQuery] string q = null)
         {
-            var produtos = await _produtoRepository.ObterTodosAsync();
-            return CustomResponse(produtos);
+            return await _produtoRepository.ObterTodosAsync(ps, page, q);
         }
 
         [HttpGet("produtos/{id:guid}")]

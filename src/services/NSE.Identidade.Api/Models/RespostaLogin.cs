@@ -1,8 +1,9 @@
-﻿namespace NSE.Identidade.Api.Dtos
+﻿namespace NSE.Identidade.Api.Models
 {
     public class RespostaLogin
     {
         public string AccessToken { get; set; }
+        public Guid RefreshToken { get; set; }
         public double ExpiresIn { get; set; }
         public string ExpiresPeriod { get; set; }
         public UsuarioToken UsuarioToken { get; set; }

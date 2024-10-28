@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Dapper;
+using Microsoft.EntityFrameworkCore;
 using NSE.Catalogo.Api.Models;
 using NSE.Core.Data;
 
@@ -6,7 +7,7 @@ namespace NSE.Catalogo.Api.Data.Repository
 {
     public interface IProdutoRepository : IRepository<Produto>
     {
-        Task<IEnumerable<Produto>> ObterTodosAsync();
+        Task<PagedResult<Produto>> ObterTodosAsync(int pageSize, int pageIndex, string query = null);
         Task<Produto> ObterPorId(Guid id);
         Task<List<Produto>> ObterProdutosPorId(string ids);
 
@@ -40,9 +41,33 @@ namespace NSE.Catalogo.Api.Data.Repository
             return await _catalogoContext.Produtos.FindAsync(id);
         }
 
-        public async Task<IEnumerable<Produto>> ObterTodosAsync()
+        public async Task<PagedResult<Produto>> ObterTodosAsync(int pageSize, int pageIndex, string query = null)
         {
-            return await _catalogoContext.Produtos.AsNoTracking().ToListAsync();
+            //var produtos = await _catalogoContext.Produtos.AsNoTracking()
+            //    .Skip(pageSize * (pageIndex - 1)).Take(pageSize)
+            //    .Where(c => c.Nome.Contains(query)).OrderBy(c => c.Nome).ToListAsync();
+
+            var sql = @$"SELECT * FROM Produtos 
+                      WHERE (@Nome IS NULL OR Nome LIKE '%' + @Nome + '%') 
+                      ORDER BY [Nome] 
+                      OFFSET {pageSize * (pageIndex - 1)} ROWS 
+                      FETCH NEXT {pageSize} ROWS ONLY 
+                      SELECT COUNT(Id) FROM Produtos 
+                      WHERE (@Nome IS NULL OR Nome LIKE '%' + @Nome + '%')";
+
+            var multi = await _catalogoContext.Database.GetDbConnection().QueryMultipleAsync(sql, new { Nome = query });
+
+            var produtos = multi.Read<Produto>();
+            var total = multi.Read<int>().FirstOrDefault();
+
+            return new PagedResult<Produto>()
+            {
+                List = produtos,
+                TotalResults = total,
+                PageIndex = pageIndex,
+                PageSize = pageSize,
+                Query = query
+            };
         }
 
         public async Task<List<Produto>> ObterProdutosPorId(string ids)

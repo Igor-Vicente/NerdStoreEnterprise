@@ -42,6 +42,7 @@ namespace NSE.WebApp.MVC.Models
     public class UsuarioResponstaLoginViewModel
     {
         public string AccessToken { get; set; }
+        public string RefreshToken { get; set; }
         public double ExpiresIn { get; set; }
         public string ExpiresPeriod { get; set; }
         public UsuarioTokenViewModel UsuarioToken { get; set; }

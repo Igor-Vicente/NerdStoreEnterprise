@@ -7,7 +7,7 @@ namespace NSE.WebApp.MVC.Services
     public interface ICatalogoService
     {
         Task<ResponseResult<ProdutoViewModel>> ObterPorId(Guid id);
-        Task<ResponseResult<ProdutoViewModel[]>> ObterTodos();
+        Task<PagedViewModel<ProdutoViewModel>> ObterTodos(int pageSize, int pageIndex, string query = null);
     }
 
     public class CatalogoService : Service, ICatalogoService
@@ -25,11 +25,11 @@ namespace NSE.WebApp.MVC.Services
             return await DeserializarDefaultResponseAsync<ProdutoViewModel>(response);
         }
 
-        public async Task<ResponseResult<ProdutoViewModel[]>> ObterTodos()
+        public async Task<PagedViewModel<ProdutoViewModel>> ObterTodos(int pageSize, int pageIndex, string query = null)
         {
-            var response = await _httpClient.GetAsync("/api/v1/catalogo/produtos");
+            var response = await _httpClient.GetAsync($"/api/v1/catalogo/produtos?ps={pageSize}&page={pageIndex}&q={query}");
             TratarErrosResponse(response);
-            return await DeserializarDefaultResponseAsync<ProdutoViewModel[]>(response);
+            return await DeserializarResponseAsync<PagedViewModel<ProdutoViewModel>>(response);
         }
     }
 
